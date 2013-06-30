@@ -1,4 +1,5 @@
 local update_time = 2 -- number of seconds between wielditem updates
+local bone = "Armature_Wield_Item"
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/rotation.lua")
 
@@ -46,7 +47,7 @@ minetest.register_entity("wield3d:wield_entity", {
 		if rotation ~= self.rotation then
 			self.object:setpos(player:getpos())
 			self.object:set_detach()
-			self.object:set_attach(player, "Armature_Wield_Item", {x=0, y=0, z=0}, {x=0, y=0, z=rotation})
+			self.object:set_attach(player, bone, {x=0, y=0, z=0}, {x=0, y=0, z=rotation})
 			self.rotation = rotation
 		end
 		self.object:set_properties({textures={item}})
@@ -63,7 +64,7 @@ minetest.register_on_joinplayer(function(player)
 		local pos = player:getpos()
 		local entity = minetest.env:add_entity(pos, "wield3d:wield_entity")
 		if entity ~= nil then
-			entity:set_attach(player, "Armature_Wield_Item", {x=0, y=0, z=0}, {x=0, y=0, z=0})
+			entity:set_attach(player, bone, {x=0, y=0, z=0}, {x=0, y=0, z=0})
 			entity = entity:get_luaentity() 
 			entity.player = player      
 		end
