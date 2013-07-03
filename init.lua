@@ -15,7 +15,7 @@ minetest.register_entity("wield3d:wield_entity", {
 		visual = "wielditem",
 		visual_size = {x=0.25, y=0.25},
 	},
-	wield_item = "",
+	wield_item = nil,
 	player = nil,
 	timer = 0,
 	rotation = 0,
