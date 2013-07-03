@@ -55,7 +55,7 @@ minetest.register_entity("wield3d:wield_entity", {
 })
 
 minetest.register_on_joinplayer(function(player)
-	minetest.after(0.5, function(player)
+	minetest.after(1, function(player)
 		player:set_properties({
 			visual = "mesh",
 			mesh = "wield3d_character.x",
