@@ -23,4 +23,8 @@ wield3d_rotation = {
 	["screwdriver:screwdriver2"]=270,
 	["screwdriver:screwdriver3"]=270,
 	["screwdriver:screwdriver4"]=270,
+	["vessels:glass_bottle"]=270,
+	["vessels:drinking_glass"]=270,
+	["vessels:steel_bottle"]=270,
 }
+
