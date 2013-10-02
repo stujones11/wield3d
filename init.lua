@@ -62,12 +62,16 @@ minetest.register_on_joinplayer(function(player)
 			visual_size = {x=1, y=1},
 		})
 		local pos = player:getpos()
-		local entity = minetest.env:add_entity(pos, "wield3d:wield_entity")
-		if entity ~= nil then
-			entity:set_attach(player, bone, {x=0, y=0, z=0}, {x=0, y=0, z=0})
-			entity = entity:get_luaentity() 
-			entity.player = player      
+		if pos then
+			local entity = minetest.env:add_entity(pos, "wield3d:wield_entity")
+			if entity then
+				entity:set_attach(player, bone, {x=0, y=0, z=0}, {x=0, y=0, z=0})
+				entity = entity:get_luaentity() 
+				entity.player = player
+				return   
+			end
 		end
+		minetest.log("error", "wield3d failed to attach wielditem")
 	end, player)
 end)
 
