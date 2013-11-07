@@ -64,7 +64,7 @@ minetest.register_entity("wield3d:wield_entity", {
 					item = "wield3d:hand"
 				end
 				local loc = wield3d_location[item] or location
-				if vector.equals(loc[1], self.location[1]) == false
+				if loc[1] ~= self.location[1]
 				or vector.equals(loc[2], self.location[2]) == false
 				or vector.equals(loc[3], self.location[3]) == false then
 					self.object:setpos(pos)
@@ -87,9 +87,7 @@ minetest.register_globalstep(function(dtime)
 			local name = player:get_player_name()
 			if name then
 				if not player_wielding[name] then
-					if add_wield_entity(player) then
-						player_wielding[name] = 1
-					end
+					player_wielding[name] = add_wield_entity(player)
 				end
 			end
 		end
