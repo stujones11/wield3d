@@ -2,7 +2,7 @@ dofile(minetest.get_modpath(minetest.get_current_modname()).."/location.lua")
 
 local update_time = 2 -- number of seconds between wielditem updates
 local location = {
-	"Armature_Arm_Right",  -- default bone
+	"Arm_Right",           -- default bone
 	{x=0.2, y=5.5, z=3},   -- default position
 	{x=-100, y=225, z=90}, -- default rotation
 }
@@ -10,20 +10,19 @@ local player_wielding = {}
 local timer = 0
 
 local function add_wield_entity(player)
-	player:set_properties({
-		visual = "mesh",
-		mesh = "wield3d_character.x",
-		visual_size = {x=1, y=1},
-	})
+	local name = player:get_player_name()
 	local pos = player:getpos()
-	if pos then
+	local inv = player:get_inventory()
+	if name and pos and inv then
 		local object = minetest.add_entity(pos, "wield3d:wield_entity")
 		if object then
 			object:set_attach(player, location[1], location[2], location[3])
-			local luaentity = object:get_luaentity()
-			if luaentity then
-				luaentity.player = player
-				return 1
+			local entity = object:get_luaentity()
+			if entity then
+				entity.player = player
+				player_wielding[name] = 1
+			else
+				object:remove()
 			end
 		end
 	end
@@ -43,10 +42,10 @@ minetest.register_entity("wield3d:wield_entity", {
 	player = nil,
 	item = nil,
 	timer = 0,
-	location = location,
+	location = {location[1], location[2], location[3]},
 	on_step = function(self, dtime)
 		self.timer = self.timer + dtime
-		if self.timer > update_time then
+		if self.timer < update_time then
 			return
 		end
 		self.timer = 0
@@ -70,7 +69,7 @@ minetest.register_entity("wield3d:wield_entity", {
 					self.object:setpos(pos)
 					self.object:set_detach()
 					self.object:set_attach(player, loc[1], loc[2], loc[3])
-					self.location = loc
+					self.location = {loc[1], loc[2], loc[3]}
 				end
 				self.object:set_properties({textures={item}})
 				return
@@ -82,12 +81,14 @@ minetest.register_entity("wield3d:wield_entity", {
 
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer > update_time then
-		for _,player in ipairs(minetest.get_connected_players()) do
-			local name = player:get_player_name()
-			if name then
-				if not player_wielding[name] then
-					player_wielding[name] = add_wield_entity(player)
+	if timer > 10 then
+		for name, state in pairs(player_wielding) do
+			if state == 0 then
+				local player = minetest.get_player_by_name(name)
+				if player then
+					add_wield_entity(player)
+				else
+					player_wielding[name] = nil
 				end
 			end
 		end
@@ -101,4 +102,23 @@ minetest.register_on_leaveplayer(function(player)
 		player_wielding[name] = nil
 	end
 end)
+
+minetest.register_on_joinplayer(function(player)
+	default.player_set_model(player, "wield3d_character.b3d")
+	player_wielding[player:get_player_name()] = 0
+	minetest.after(1, add_wield_entity, player)
+end)
+
+default.player_register_model("wield3d_character.b3d", {
+	animation_speed = 30,
+	textures = {"character.png"},
+	animations = {
+		stand = {x=0, y=79},
+		lay = {x=162, y=166},
+		walk = {x=168, y=187},
+		mine = {x=189, y=198},
+		walk_mine = {x=200, y=219},
+		sit = {x=81, y=160},
+	},
+})
 
