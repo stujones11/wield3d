@@ -1,6 +1,6 @@
 -- Wielded Item Location Overrides - [item_name] = {bone, position, rotation}
 
-local bone = "Armature_Arm_Right"
+local bone = "Arm_Right"
 
 wield3d_location = {
 	["default:torch"] = {bone, {x=0.2, y=5.5, z=3}, {x=-100, y=182, z=83}},
