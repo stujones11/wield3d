@@ -69,9 +69,15 @@ minetest.register_entity("wield3d:wield_entity", {
 			if p1 and p2 then
 				if vector.equals(p1, p2) then
 					local stack = player:get_wielded_item()
-					local item = stack:get_name()
+					local item = stack:get_name() or ""
 					if item == self.item then
 						return
+					end
+					if minetest.get_modpath("wieldview") then
+						local def = minetest.registered_items[item] or {}
+						if def.inventory_image ~= "" then
+							item = ""
+						end
 					end
 					self.item = item
 					if item == "" then
