@@ -13,7 +13,7 @@ dofile(modpath.."/location.lua")
 
 local location = {
 	"Arm_Right",           -- default bone
-	{x=0.2, y=5.5, z=3},   -- default position
+	{x=0.2, y=6.5, z=3},   -- default position
 	{x=-100, y=225, z=90}, -- default rotation
 }
 local player_wielding = {}
@@ -81,7 +81,6 @@ minetest.register_entity("wield3d:wield_entity", {
 					if loc[1] ~= self.location[1]
 					or vector.equals(loc[2], self.location[2]) == false
 					or vector.equals(loc[3], self.location[3]) == false then
-						self.object:setpos(p2)
 						self.object:set_detach()
 						self.object:set_attach(player, loc[1], loc[2], loc[3])
 						self.location = {loc[1], loc[2], loc[3]}
@@ -121,21 +120,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	default.player_set_model(player, "wield3d_character.b3d")
 	player_wielding[player:get_player_name()] = 0
 	minetest.after(WIELD3D_INIT_DELAY, add_wield_entity, player)
 end)
-
-default.player_register_model("wield3d_character.b3d", {
-	animation_speed = 30,
-	textures = {"character.png"},
-	animations = {
-		stand = {x=0, y=79},
-		lay = {x=162, y=166},
-		walk = {x=168, y=187},
-		mine = {x=189, y=198},
-		walk_mine = {x=200, y=219},
-		sit = {x=81, y=160},
-	},
-})
 
