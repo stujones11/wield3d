@@ -13,7 +13,7 @@ dofile(modpath.."/location.lua")
 
 local location = {
 	"Armature_Arm_Right",  -- default bone
-	{x=0.2, y=5.5, z=3},   -- default position
+	{x=0.2, y=6.5, z=3},   -- default position
 	{x=-100, y=225, z=90}, -- default rotation
 }
 local player_wielding = {}
