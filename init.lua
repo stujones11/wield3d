@@ -12,7 +12,7 @@ end
 dofile(modpath.."/location.lua")
 
 local location = {
-	"Arm_Right",           -- default bone
+	"Armature_Arm_Right",  -- default bone
 	{x=0.2, y=5.5, z=3},   -- default position
 	{x=-100, y=225, z=90}, -- default rotation
 }
@@ -121,12 +121,12 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	default.player_set_model(player, "wield3d_character.b3d")
+	default.player_set_model(player, "wield3d_character.x")
 	player_wielding[player:get_player_name()] = 0
 	minetest.after(WIELD3D_INIT_DELAY, add_wield_entity, player)
 end)
 
-default.player_register_model("wield3d_character.b3d", {
+default.player_register_model("wield3d_character.x", {
 	animation_speed = 30,
 	textures = {"character.png"},
 	animations = {
