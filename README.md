@@ -11,5 +11,7 @@ Depends: default
 
 Makes hand wielded items visible to other players.
 
-See wield3d.conf.example for config options (save as wield3d.conf)
+By default the wielded object is updated at one second intervals,
+you can override this by adding wield3d_update_time = 1 (seconds)
+to your minetest.conf
 
