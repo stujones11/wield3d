@@ -11,6 +11,7 @@ local location = {
 	"Arm_Right",          -- default bone
 	{x=0, y=5.5, z=3},    -- default position
 	{x=-90, y=225, z=90}, -- default rotation
+	{x=0.25, y=0.25},     -- default scale
 }
 
 local function add_wield_entity(player)
@@ -21,6 +22,10 @@ local function add_wield_entity(player)
 		local object = minetest.add_entity(pos, "wield3d:wield_entity")
 		if object then
 			object:set_attach(player, location[1], location[2], location[3])
+			object:set_properties({
+				textures = {"wield3d:hand"},
+				visual_size = location[4],
+			})
 			player_wielding[name] = {}
 			player_wielding[name].item = ""
 			player_wielding[name].object = object
@@ -38,8 +43,6 @@ minetest.register_entity("wield3d:wield_entity", {
 	physical = false,
 	collisionbox = {-0.125,-0.125,-0.125, 0.125,0.125,0.125},
 	visual = "wielditem",
-	visual_size = {x=0.25, y=0.25},
-	textures = {"wield3d:hand"},
 	on_activate = function(self, staticdata)
 		if staticdata == "expired" then
 			self.object:remove()
@@ -84,7 +87,10 @@ minetest.register_globalstep(function(dtime)
 					wield.object:set_attach(player, loc[1], loc[2], loc[3])
 					wield.location = {loc[1], loc[2], loc[3]}
 				end
-				wield.object:set_properties({textures={item}})
+				wield.object:set_properties({
+					textures = {item},
+					visual_size = loc[4],
+				})
 			end
 		else
 			add_wield_entity(player)
