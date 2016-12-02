@@ -83,7 +83,6 @@ minetest.register_globalstep(function(dtime)
 				if loc[1] ~= wield.location[1] or
 						not vector.equals(loc[2], wield.location[2]) or
 						not vector.equals(loc[3], wield.location[3]) then
-					wield.object:set_detach()
 					wield.object:set_attach(player, loc[1], loc[2], loc[3])
 					wield.location = {loc[1], loc[2], loc[3]}
 				end
