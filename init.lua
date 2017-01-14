@@ -36,7 +36,7 @@ end
 
 minetest.register_item("wield3d:hand", {
 	type = "none",
-	wield_image = "wield3d_trans.png",
+	wield_image = "blank.png",
 })
 
 minetest.register_entity("wield3d:wield_entity", {
