@@ -3,7 +3,7 @@ wield3d = {}
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/location.lua")
 
 local has_wieldview = minetest.get_modpath("wieldview")
-local update_time_conf = minetest.setting_get("wield3d_update_time") or 1
+local update_time_conf = minetest.settings:get("wield3d_update_time") or 1
 local update_time = tonumber(update_time_conf) or 1
 local timer = 0
 local player_wielding = {}
@@ -16,7 +16,7 @@ local location = {
 
 local function add_wield_entity(player)
 	local name = player:get_player_name()
-	local pos = player:getpos()
+	local pos = player:get_pos()
 	if name and pos then
 		pos.y = pos.y + 0.5
 		local object = minetest.add_entity(pos, "wield3d:wield_entity")
