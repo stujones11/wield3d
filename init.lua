@@ -28,19 +28,22 @@ wield3d = {}
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/location.lua")
 
+local player_wielding = {}
 local has_wieldview = minetest.get_modpath("wieldview")
 local update_time = minetest.settings:get("wield3d_update_time")
 local verify_time = minetest.settings:get("wield3d_verify_time")
-local player_wielding = {}
+local wield_scale = minetest.settings:get("wield3d_scale")
+
 update_time = update_time and tonumber(update_time) or 1
 verify_time = verify_time and tonumber(verify_time) or 10
+wield_scale = verify_time and tonumber(wield_scale) or 0.25 -- default scale
+
 local location = {
 	"Arm_Right",          -- default bone
 	{x=0, y=5.5, z=3},    -- default position
 	{x=-90, y=225, z=90}, -- default rotation
-	{x=0.25, y=0.25},     -- default scale
+	{x=wield_scale, y=wield_scale},
 }
-
 
 local function add_wield_entity(player)
 	if not player or not player:is_player() then
