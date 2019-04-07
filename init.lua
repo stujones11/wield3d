@@ -36,7 +36,7 @@ local wield_scale = minetest.settings:get("wield3d_scale")
 
 update_time = update_time and tonumber(update_time) or 1
 verify_time = verify_time and tonumber(verify_time) or 10
-wield_scale = verify_time and tonumber(wield_scale) or 0.25 -- default scale
+wield_scale = wield_scale and tonumber(wield_scale) or 0.25 -- default scale
 
 local location = {
 	"Arm_Right",          -- default bone
