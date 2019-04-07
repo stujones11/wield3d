@@ -1,7 +1,7 @@
 [mod] 3d wielded items [wield3d]
 ================================
 
-Mod Version: 0.5
+Mod Version: 0.5.0
 
 Minetest Version: 5.0.0 or later
 
