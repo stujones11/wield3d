@@ -14,6 +14,6 @@ you can override this by adding `wield3d_update_time = 1` (seconds)
 to your minetest.conf
 
 Servers can also control how often to verify the wield item of each
-individual player by setting `wield3d_update_time = 10` (seconds)
+individual player by setting `wield3d_verify_time = 10` (seconds)
 
 The default wielditem scale can now be specified by including `wield3d_scale = 0.25`
