@@ -60,9 +60,7 @@ local function add_wield_entity(player)
 				textures = {"wield3d:hand"},
 				visual_size = location[4],
 			})
-			player_wielding[name] = {}
-			player_wielding[name].item = ""
-			player_wielding[name].location = location
+			player_wielding[name] = {item="", location=location}
 		end
 	end
 end
@@ -158,13 +156,11 @@ local function verify_wielditems()
 				table.insert(names, name)
 			end
 		end
-		-- clean-up player_wielding table
-		for name, _ in pairs(player_wielding) do
-			if not tmp[name] then
-				player_wielding[name] = nil
-			end
-		end
 		player_iter = table_iter(names)
+		-- clean-up player_wielding table
+		for name, wield in pairs(player_wielding) do
+			player_wielding[name] = tmp[name] and wield
+		end
 	end
 	 -- only deal with one player per server step
 	local name = player_iter()
@@ -178,8 +174,11 @@ local function verify_wielditems()
 			for _, object in pairs(objects) do
 				local entity = object:get_luaentity()
 				if entity and entity.wielder == name then
+					if wielding then
+						-- remove duplicates
+						object:remove()
+					end
 					wielding = true
-					break
 				end
 			end
 			if not wielding then
