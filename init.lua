@@ -100,9 +100,8 @@ function wield_entity:on_step(dtime)
 		return
 	end
 	local player = minetest.get_player_by_name(self.wielder)
-	if player == nil or
+	if player == nil or not player:is_player() or
 			sq_dist(player:get_pos(), self.object:get_pos()) > 3 then
-		player_wielding[self.wielder] = nil
 		self.object:remove()
 		return
 	end
@@ -149,16 +148,33 @@ end
 local player_iter = nil
 
 local function verify_wielditems()
-	player_iter = player_iter or table_iter(minetest.get_connected_players())
+	if player_iter == nil then
+		local names = {}
+		local tmp = {}
+		for player in table_iter(minetest.get_connected_players()) do
+			local name = player:get_player_name()
+			if name then
+				tmp[name] = true;
+				table.insert(names, name)
+			end
+		end
+		-- clean-up player_wielding table
+		for name, _ in pairs(player_wielding) do
+			if not tmp[name] then
+				player_wielding[name] = nil
+			end
+		end
+		player_iter = table_iter(names)
+	end
 	 -- only deal with one player per server step
-	local player = player_iter()
-	if player and player:is_player() then
-		local name = player:get_player_name()
-		local pos = name and player:get_pos()
-		if pos then
+	local name = player_iter()
+	if name then
+		local player = minetest.get_player_by_name(name)
+		if player and player:is_player() then
+			local pos = player:get_pos()
 			pos.y = pos.y + 0.5
 			local wielding = false
-			local objects = minetest.get_objects_inside_radius(pos, 0.5)
+			local objects = minetest.get_objects_inside_radius(pos, 1)
 			for _, object in pairs(objects) do
 				local entity = object:get_luaentity()
 				if entity and entity.wielder == name then
@@ -167,6 +183,7 @@ local function verify_wielditems()
 				end
 			end
 			if not wielding then
+				player_wielding[name] = nil
 				add_wield_entity(player)
 			end
 		end
@@ -187,11 +204,4 @@ minetest.register_item("wield3d:hand", {
 
 minetest.register_on_joinplayer(function(player)
 	minetest.after(2, add_wield_entity, player)
-end)
-
-minetest.register_on_leaveplayer(function(player)
-	local name = player:get_player_name()
-	if name then
-		player_wielding[name] = nil
-	end
 end)
