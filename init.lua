@@ -79,10 +79,11 @@ local wield_entity = {
 	textures = {"wield3d:hand"},
 	wielder = nil,
 	timer = 0,
+	static_save = false,
 }
 
 function wield_entity:on_activate(staticdata)
-	if staticdata then
+	if staticdata and staticdata ~= "" then
 		self.wielder = staticdata
 		return
 	end
