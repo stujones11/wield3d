@@ -74,6 +74,7 @@ end
 
 local wield_entity = {
 	physical = false,
+	pointable = false,
 	collisionbox = {-0.125,-0.125,-0.125, 0.125,0.125,0.125},
 	visual = "wielditem",
 	textures = {"wield3d:hand"},
